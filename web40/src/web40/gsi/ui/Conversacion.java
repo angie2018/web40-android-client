@@ -232,9 +232,7 @@ public class Conversacion extends Activity implements OnInitListener{
 		
 		
 		
-		servidor = "ladvan91@gmail.com";
-		//servidor = "minsky@jabberes.org";
-		//servidor = "miguelcb84@gmail.com";
+		servidor = "xxxx@gmail.com";
 		if(!conexionEstablecida){
 			// gtalk requires this or your messages bounce back as errors
 	        ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
@@ -250,7 +248,7 @@ public class Conversacion extends Activity implements OnInitListener{
 	            conexionEstablecida = false;
 	        }
 	        try {
-	            connection.login("minsky.gsi@gmail.com", "20gsiwifi08");
+	            connection.login("xxxxx@gmail.com", "xxxxxx");
 	            System.out.println("Logged in as " + connection.getUser());
 	            
 	            Presence presence = new Presence(Presence.Type.available);
