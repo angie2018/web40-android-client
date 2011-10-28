@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Main!</string>
+    <string name="app_name">web40</string>
+    <string name="tab1">Conversacion</string>
+    <string name="tab1_indicator"></string>
+    <string name="tab2">Sugerencias</string>
+    <string name="tab2_indicator"></string>
+    <string name="tab3">Planes</string>
+    <string name="tab3_indicator"></string>
+    <string name="exit">Salir</string>
+    <string name="hit">Hit: touch the first or last day of month to move to previous or next month.</string>  
+    
+</resources>
