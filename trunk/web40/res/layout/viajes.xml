@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/prueba1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="horizontal">
+	<!-- <LinearLayout android:id="@+id/contenido_vuelo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:orientation="vertical">
+  		<TextView android:id="@+id/nombreDeLaCompañia"
+  			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:textSize="15px"
+			android:textColor="#FFD700"/>
+		<TextView android:id="@+id/diaVuelo"
+  			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textSize="12px"/>
+		<LinearLayout android:id="@+id/precio_puntuacion"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:orientation="horizontal">
+			<TextView android:id="@+id/precioVuelo"
+  				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:textSize="13px"
+				android:textColor="#FFD700"/>
+			<ImageView android:id="@+id/diaVuelo"
+  				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+		
+	</LinearLayout> -->
+	
+	<Button android:id="@+id/elegirVuelo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="right"/>	
+  
+</LinearLayout>

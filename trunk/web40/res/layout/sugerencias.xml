@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+ 	 <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5px"
+        android:paddingLeft="5px"
+        android:background="#808080"
+        >
+        <TextView android:text="Vuelos aceptados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+        />
+         <Button android:id="@+id/actualizar" 
+    		android:text="Actualizar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+ 	 <ListView android:id="@+id/listaPlanes"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stackFromBottom="false"
+        android:transcriptMode="alwaysScroll"
+        android:focusable="true"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:soundEffectsEnabled="true"
+        android:cacheColorHint="#ffffff"
+    />
+    
+</LinearLayout>
