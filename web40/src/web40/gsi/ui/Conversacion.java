@@ -23,6 +23,7 @@ import web40.gsi.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -42,11 +44,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -76,7 +73,7 @@ public class Conversacion extends Activity implements OnInitListener{
     
     
 	//Text-to-Speech
-    private TextToSpeech mTts;
+    private static TextToSpeech mTts;
     
     
     //For XMPP
@@ -85,6 +82,10 @@ public class Conversacion extends Activity implements OnInitListener{
     private static boolean conexionEstablecida = false; 
     private static ImageView image;
     
+    private ConnectionConfiguration connConfig;
+    private XMPPConnection connection;
+
+	private SharedPreferences prefs;
     
     private static Handler handler = new Handler() {
     	public void  handleMessage( android.os.Message msg) {
@@ -101,9 +102,6 @@ public class Conversacion extends Activity implements OnInitListener{
     private static Context context;
 
 
-    public static void kk(){     	
-    }
-
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);   
     	context=getApplicationContext();
@@ -119,6 +117,8 @@ public class Conversacion extends Activity implements OnInitListener{
 	
 	public void start(){
     	setContentView(R.layout.conversacion);
+    	
+    	prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	
     	db = new DBAdapter(this);
     	
@@ -168,7 +168,7 @@ public class Conversacion extends Activity implements OnInitListener{
 				  Mensajes mensajes = mConversationArrayAdapter.getItem(position);
 				  mTts.speak(mensajes.toString(),TextToSpeech.QUEUE_FLUSH, null);
 				  
-				  RotateAnimation  ranim = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+				  /*RotateAnimation  ranim = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 	              ranim.setDuration(200);  
 	              ranim.setFillAfter(true);
 	              ranim.willChangeBounds();
@@ -183,7 +183,7 @@ public class Conversacion extends Activity implements OnInitListener{
 	              set.setFillEnabled(true);
 	              LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
 	              controller.setInterpolator(new LinearInterpolator());
-	              mConversationView.setLayoutAnimation(controller);
+	              mConversationView.setLayoutAnimation(controller);*/
 				  
 				 /* AnimationSet set1 = new AnimationSet(true);
 
@@ -232,11 +232,13 @@ public class Conversacion extends Activity implements OnInitListener{
 		
 		
 		
-		servidor = "xxxx@gmail.com";
+		//servidor = "ladvan91@gmail.com";
+		//servidor = "minsky@jabberes.org";
+		servidor = "miguelcb84@gmail.com";
 		if(!conexionEstablecida){
 			// gtalk requires this or your messages bounce back as errors
-	        ConnectionConfiguration connConfig = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
-	        XMPPConnection connection = new XMPPConnection(connConfig);
+	        connConfig = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com");
+	        connection = new XMPPConnection(connConfig);
 	        
 	        try {
 	            connection.connect();
@@ -248,7 +250,7 @@ public class Conversacion extends Activity implements OnInitListener{
 	            conexionEstablecida = false;
 	        }
 	        try {
-	            connection.login("xxxxx@gmail.com", "xxxxxx");
+	            connection.login("minsky.gsi@gmail.com", prefs.getString("password", ""));
 	            System.out.println("Logged in as " + connection.getUser());
 	            
 	            Presence presence = new Presence(Presence.Type.available);
@@ -257,7 +259,11 @@ public class Conversacion extends Activity implements OnInitListener{
 	        } catch (XMPPException ex) {
 	            //ex.printStackTrace();
 	            System.out.println("Failed to log in as " + connection.getUser());
-	            System.exit(1);
+	            SharedPreferences.Editor editor = prefs.edit();
+	            editor.putString("password", "");
+	            editor.commit();
+	            finish();
+	            startActivity(new Intent(getApplicationContext(), Password.class));
 	            conexionEstablecida = false;
 	        }
 	        
@@ -267,9 +273,9 @@ public class Conversacion extends Activity implements OnInitListener{
 	        try {
 	            // google bounces back the default message types, you must use chat
 	            Message msg = new Message(servidor, Message.Type.chat);
-	            msg.setBody("Conexion establecida, usted esta hablando con: Minsky");
+	            msg.setBody("Conexión establecida, usted esta hablando con: Minsky."+'\n'+"Estoy aquí para ayudarle.");
 	            chat.sendMessage(msg);
-	            sendMessage(msg.getBody());
+	            sendMessageServer(msg.getBody());
 	        } catch (XMPPException e) {
 	            System.out.println("Failed to send message");
 	        }	
@@ -360,6 +366,7 @@ public class Conversacion extends Activity implements OnInitListener{
     }
     public static void sendMessageServer(String messageServer){
     	mConversationArrayAdapter.add(new Mensajes(messageServer, "bot", null));
+        mTts.speak(messageServer,TextToSpeech.QUEUE_FLUSH, null);
     	handler.sendEmptyMessage(0);
     }
 
@@ -386,7 +393,9 @@ public class Conversacion extends Activity implements OnInitListener{
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case EXIT: finish(); 
+            case EXIT: 
+        		connection.disconnect();
+        		finish(); 
         		System.exit(0);
                 break;
         }
@@ -406,6 +415,7 @@ public class Conversacion extends Activity implements OnInitListener{
     	if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
     			&& !event.isCanceled()) {
     		// *** DO ACTION HERE ***
+    		connection.disconnect();
     		finish(); 
     		System.exit(0);
     		return true;
@@ -605,7 +615,7 @@ public class Conversacion extends Activity implements OnInitListener{
                 Conversacion.sendMessageServer(formToRespond.toString());
                 Conversacion.handler.sendEmptyMessage(0);
             }
-            if(Main.mTabHost.getCurrentTab()!= 1){
+            if(Main.mTabHost.getCurrentTab()!= 0){
             	Conversacion.handler_newMessage.sendEmptyMessage(0);
             }
         }
