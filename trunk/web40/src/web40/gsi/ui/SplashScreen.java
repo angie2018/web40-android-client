@@ -3,14 +3,18 @@ package web40.gsi.ui;
 import web40.gsi.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
  
 public class SplashScreen extends Activity {	
-    
+
+	private SharedPreferences prefs;
+	
    /** Called when the activity is first created. */
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,8 @@ public class SplashScreen extends Activity {
 	   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 	   setContentView(R.layout.splash);
 	   
+	   prefs = PreferenceManager.getDefaultSharedPreferences(this);	  
+   	
 	   Thread splashThread = new Thread() {
 		   @Override
 		   public void run() {
@@ -34,8 +40,13 @@ public class SplashScreen extends Activity {
 			   } catch (InterruptedException e) {
 				   e.printStackTrace();
 			   } finally {
-				   finish();
-				   startActivity(new Intent(getApplicationContext(), Main.class));
+				   if(prefs.getString("password", "").equals("")){
+					   finish();
+					   startActivity(new Intent(getApplicationContext(), Password.class));
+				   }else{
+					   finish();
+					   startActivity(new Intent(getApplicationContext(), Main.class));
+				   }
 			   }
 		   }
 	   };

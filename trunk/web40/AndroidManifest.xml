@@ -16,6 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.Password" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation"></activity>
         <activity android:name=".ui.Main" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation"></activity>
         <activity android:name=".ui.Conversacion" android:configChanges="keyboard|keyboardHidden|orientation" android:label="@string/tab1"></activity>
         <activity android:name=".ui.Sugerencias" android:configChanges="orientation|keyboardHidden" android:label="@string/tab2"></activity>
