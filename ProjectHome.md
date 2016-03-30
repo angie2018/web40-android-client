@@ -1,0 +1,1 @@
+This is the Android Client for the Web4.0 AI MAS system.
